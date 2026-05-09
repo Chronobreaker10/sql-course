@@ -12,8 +12,8 @@ drop table if exists person;
 
 create table person (
 	person_id int generated always as identity primary key,
-	first_name varchar(64),
-	last_name varchar(64)
+	first_name varchar(64) not null,
+	last_name varchar(64) not null
 );
 
 insert into person(first_name, last_name) values ('Иван', 'Петров')
@@ -30,7 +30,7 @@ create table passport (
 
 alter table passport add constraint chk_passport_serial_number check(serial_number >= 100000 and serial_number < 1000000);
 
-insert into passport(serial_number, person_id) values (123, 1);
+insert into passport(serial_number, person_id) values (123456, 1);
 
 drop table if exists student;
 
@@ -49,7 +49,7 @@ alter table products add constraint chk_products_unit_price check(unit_price > 0
 
 select max(product_id) + 1 from products;
 
-create sequence product_id_seq start with 79 owned by products.product_id;
+create sequence if not exists products_product_id_seq start with 79 owned by products.product_id;
 
 alter table products alter column product_id set default nextval('product_id_seq');
 
