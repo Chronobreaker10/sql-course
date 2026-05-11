@@ -22,3 +22,15 @@ from orders o
 right join customers c using(customer_id)
 where o.order_id is null
 order by c.contact_name;
+
+select
+	o.customer_id
+	, c.contact_name 
+	, c.country 
+	, c.city 
+	, round(sum(od.unit_price * od.quantity * (1 - od.discount))) as total
+from order_details od
+join orders o using(order_id)
+join customers c using(customer_id)
+group by o.customer_id, c.contact_name, c.phone, c.country, c.city
+order by total desc
